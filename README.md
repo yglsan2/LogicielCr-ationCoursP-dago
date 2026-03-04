@@ -1,7 +1,17 @@
-# Createur de cours
+# Créateur de cours
 
-Application de création de cours pour enseignants : **simple**, **moderne**, **facile à utiliser**, **efficace** et **complète**.  
-Stack : **Flutter** (app multiplateforme) + **Django** (API REST, exports).
+Logiciel pour concevoir et structurer des cours : éditeur de contenus avec parties et blocs, sauvegarde locale ou synchronisée, export HTML et PDF.
+
+**Stack :** Flutter (application) + Django (API).
+
+---
+
+## Ce que fait l’application
+
+- **Création de cours** : titre, parties (chapitres), blocs de contenu dans chaque partie.
+- **Blocs disponibles** : texte (titre, paragraphe, objectif, liste, surlignage), médias (image, vidéo, tableau blanc), code et terminal, questions (QCU, QCM, ordre, numérique, etc.), tableaux, glossaire, **partition musicale** (portées, clés de sol/fa, notes, silences), audio.
+- **Utilisation** : avec ou sans compte. Sans compte, les cours restent sur l’appareil ; avec compte, synchronisation et export.
+- **Export** : cours exportables en HTML ou PDF (avec compte).
 
 ---
 
@@ -13,17 +23,16 @@ createur-cours/
 │   ├── lib/
 │   │   ├── core/        # Thème, API, auth
 │   │   ├── models/      # Course, Part, Block
-│   │   ├── screens/     # Splash, Auth, Home, Éditeur, Onboarding
-│   │   └── widgets/     # PartCard, BlockTile, AddBlockSheet
+│   │   ├── screens/     # Accueil, Auth, Éditeur, Onboarding
+│   │   └── widgets/     # Cartes de parties, blocs, panneau d’ajout
 │   └── pubspec.yaml
 ├── backend/             # API Django
 │   ├── config/          # Settings, URLs
-│   ├── courses/         # Modèles, vues, exports (HTML, PDF)
+│   ├── courses/         # Modèles, vues, exports HTML/PDF
 │   ├── manage.py
 │   └── requirements.txt
-├── STRATEGIE.md         # Stratégie produit
-├── idees-opale-reference.md
-└── .cursor/rules/       # Règles Cursor
+├── STRATEGIE.md
+└── .cursor/rules/       # Règles de développement
 ```
 
 ---
@@ -33,28 +42,26 @@ createur-cours/
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate   # ou .venv\Scripts\activate sous Windows
+source .venv/bin/activate   # Windows : .venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 ```
 
-L’API est disponible sur **http://127.0.0.1:8000/api/**.
+API : **http://127.0.0.1:8000/api/**
 
-- **Inscription** : `POST /api/auth/register/` (username, password, email optionnel)
-- **Connexion** : `POST /api/auth/token/` (username, password) → access + refresh
-- **Cours** : `GET/POST /api/courses/`, `GET/PATCH/DELETE /api/courses/:id/`
-- **Parties** : `GET/POST /api/parts/`, `PATCH/DELETE /api/parts/:id/`
-- **Blocs** : `GET/POST /api/blocks/`, `PATCH/DELETE /api/blocks/:id/`
-- **Export** : `GET /api/courses/:id/export/html/`, `GET /api/courses/:id/export/pdf/`
+- Inscription : `POST /api/auth/register/`
+- Connexion : `POST /api/auth/token/`
+- Cours, parties, blocs : CRUD classique
+- Export : `GET /api/courses/:id/export/html/` et `.../export/pdf/`
 
-Pour l’export PDF, installer WeasyPrint : `pip install weasyprint` (dépendances système selon la doc WeasyPrint).
+Pour le PDF : `pip install weasyprint` (et dépendances système indiquées dans la doc WeasyPrint).
 
 ---
 
 ## Lancer l’app Flutter
 
-Configurer l’URL de l’API dans `app/lib/core/auth_provider.dart` si besoin (par défaut `http://127.0.0.1:8000/api`).
+L’URL de l’API est dans `app/lib/core/auth_provider.dart` (par défaut `http://127.0.0.1:8000/api`).
 
 ```bash
 cd app
@@ -62,26 +69,13 @@ flutter pub get
 flutter run
 ```
 
-- **Linux (desktop)** : `flutter run -d linux`
-- **Web** : `flutter run -d chrome` (si Chrome est détecté) ou `flutter run -d web-server` puis ouvrir l’URL affichée dans un navigateur
-- **Autre cible** : `flutter devices` puis `flutter run -d <device_id>`
+- Linux : `flutter run -d linux`
+- Web : `flutter run -d chrome` ou `flutter run -d web-server`
+- Autre : `flutter devices` puis `flutter run -d <device_id>`
 
 ---
 
-## Fonctionnalités
-
-- **Authentification** : inscription, connexion, JWT, déconnexion
-- **Liste des cours** : création, ouverture, suppression (via l’éditeur)
-- **Éditeur** : titre du cours éditable, parties réordonnables (glisser-déposer), blocs réordonnables
-- **Blocs** : titre, paragraphe, objectif, liste, image, vidéo, audio, question à une réponse, question à plusieurs réponses, ordonnancement, réponse numérique, texte à compléter, catégorisation
-- **Édition inline** : clic sur un champ → édition sur place, pas de modale pour le texte
-- **Sauvegarde** : envoi au serveur à la soumission des champs (indicateur « Enregistré »)
-- **Export** : HTML (navigateur), PDF (téléchargement)
-- **Onboarding** : parcours court, optionnel, depuis le menu
-
----
-
-## Créer un utilisateur de test (backend)
+## Utilisateur de test (backend)
 
 ```bash
 cd backend
@@ -89,12 +83,15 @@ source .venv/bin/activate
 python manage.py createsuperuser
 ```
 
-Ou via l’app : **Inscription** avec un nom d’utilisateur et un mot de passe.
+Ou créer un compte depuis l’app (Inscription).
 
 ---
 
 ## Documentation
 
-- **Stratégie** : voir `STRATEGIE.md`
-- **Référence Opale** : voir `idees-opale-reference.md`
+- **Stratégie produit** : `STRATEGIE.md`
 - **Règles de développement** : `.cursor/rules/`
+
+---
+
+**Créateur :** DesertYGL
