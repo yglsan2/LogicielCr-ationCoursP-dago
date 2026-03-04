@@ -1,0 +1,2 @@
+# Ne pas versionner le dossier de configuration Cursor
+.cursor/
