@@ -31,8 +31,6 @@ createur-cours/
 │   ├── courses/         # Modèles, vues, exports HTML/PDF
 │   ├── manage.py
 │   └── requirements.txt
-├── STRATEGIE.md
-└── .cursor/rules/       # Règles de développement
 ```
 
 ---
@@ -84,13 +82,6 @@ python manage.py createsuperuser
 ```
 
 Ou créer un compte depuis l’app (Inscription).
-
----
-
-## Documentation
-
-- **Stratégie produit** : `STRATEGIE.md`
-- **Règles de développement** : `.cursor/rules/`
 
 ---
 
